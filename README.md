@@ -1,6 +1,6 @@
 # Pandu's BLD trainer cube
 
-Forked from https://github.com/joews/rubik-js
+Forked from https://github.com/joews/rubik-js  
 See it in action: https://bld-memo-trainer-2.firebaseapp.com/
 
 Changes
