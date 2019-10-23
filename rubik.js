@@ -6,6 +6,8 @@ function Rubik(element, dimensions, background) {
   dimensions = dimensions || 3;
   background = background || 0x303030;
 
+  var scramble = [];
+
   var width = element.innerWidth(),
       height = element.innerHeight();
 
@@ -265,6 +267,7 @@ function Rubik(element, dimensions, background) {
     }
   }
 
+
   /*** Manage transition states ***/
 
   //TODO: encapsulate each transition into a "Move" object, and keep a stack of moves
@@ -281,7 +284,7 @@ function Rubik(element, dimensions, background) {
   //Are we in the middle of a transition?
   var isMoving = false,
       moveAxis, moveN, moveDirection,
-      rotationSpeed = 32.0;
+      rotationSpeed = 32;
 
   //http://stackoverflow.com/questions/20089098/three-js-adding-and-removing-children-of-rotated-objects
   var pivot = new THREE.Object3D(),
@@ -309,9 +312,9 @@ function Rubik(element, dimensions, background) {
   }
 
   var pushMove = function(cube, clickVector, axis, direction) {
-    console.log('pushMove:', cube.id, axis, direction, cube.position);
-    window.lastCube = cube;
     moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
+
+    scramble.push(interpretMove(cube, axis, direction));
   }
 
   var startNextMove = function() {
@@ -430,7 +433,6 @@ function Rubik(element, dimensions, background) {
           cube => isCorner(cube)
         );
         var i = randomInt(0, nonCentres.length - 1);
-        console.log(nonCentres.map(c => c.position));
         //TODO: don't return a centre cube
         return nonCentres[i];
       }
@@ -445,14 +447,16 @@ function Rubik(element, dimensions, background) {
         return n > -epsilon && n < epsilon;
       }
 
-      var nMoves = randomInt(60, 70);
+      var nMoves = randomInt(40, 50);
       for(var i = 0; i < nMoves; i ++) {
         //TODO: don't reselect the same axis?
         var cube = randomCube();
         const move = [cube, cube.position.clone(), randomAxis(), randomDirection()];
-        // console.log(move);
         pushMove(...move);
       }
+
+      scramble.reverse();
+      console.log(scramble.join(' '));
 
       startNextMove();
     },
