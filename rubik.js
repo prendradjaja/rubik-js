@@ -247,6 +247,7 @@ function Rubik(element, dimensions, background) {
     });
 
     scene.add(cube);
+    console.log('new cube', allCubes.length, cube.position);
     allCubes.push(cube);
   }
 
@@ -280,7 +281,7 @@ function Rubik(element, dimensions, background) {
   //Are we in the middle of a transition?
   var isMoving = false,
       moveAxis, moveN, moveDirection,
-      rotationSpeed = 0.2;
+      rotationSpeed = 32.0;
 
   //http://stackoverflow.com/questions/20089098/three-js-adding-and-removing-children-of-rotated-objects
   var pivot = new THREE.Object3D(),
@@ -308,6 +309,8 @@ function Rubik(element, dimensions, background) {
   }
 
   var pushMove = function(cube, clickVector, axis, direction) {
+    console.log('pushMove:', cube.id, axis, direction, cube.position);
+    window.lastCube = cube;
     moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
   }
 
@@ -423,15 +426,32 @@ function Rubik(element, dimensions, background) {
       }
 
       function randomCube() {
-        var i = randomInt(0, 1) * 2;
-        return allCubes[i];
+        const nonCentres = allCubes.filter(
+          cube => isCorner(cube)
+        );
+        var i = randomInt(0, nonCentres.length - 1);
+        console.log(nonCentres.map(c => c.position));
+        //TODO: don't return a centre cube
+        return nonCentres[i];
       }
 
-      var nMoves = randomInt(40, 50);
+      function isCorner(cube) {
+        const coords = [cube.position.x, cube.position.y, cube.position.z];
+        return coords.filter(n => isZero(n)).length === 0;
+      }
+
+      function isZero(n) {
+        const epsilon = 0.01;
+        return n > -epsilon && n < epsilon;
+      }
+
+      var nMoves = randomInt(60, 70);
       for(var i = 0; i < nMoves; i ++) {
         //TODO: don't reselect the same axis?
         var cube = randomCube();
-        pushMove(cube, cube.position.clone(), randomAxis(), randomDirection());
+        const move = [cube, cube.position.clone(), randomAxis(), randomDirection()];
+        // console.log(move);
+        pushMove(...move);
       }
 
       startNextMove();
