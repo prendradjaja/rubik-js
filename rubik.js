@@ -199,7 +199,7 @@ function Rubik(element, dimensions, background) {
       cubeMaterials = new THREE.MeshFaceMaterial(faceMaterials);
 
   var cubeSize = 3,
-      spacing = 0.5;
+      spacing = 0.2;
 
   var increment = cubeSize + spacing,
       maxExtent = (cubeSize * dimensions + spacing * (dimensions - 1)) / 2, 
