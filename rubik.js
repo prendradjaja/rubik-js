@@ -427,7 +427,7 @@ function Rubik(element, dimensions, background) {
         return allCubes[i];
       }
 
-      var nMoves = randomInt(10, 40);
+      var nMoves = randomInt(40, 50);
       for(var i = 0; i < nMoves; i ++) {
         //TODO: don't reselect the same axis?
         var cube = randomCube();
