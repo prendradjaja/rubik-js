@@ -1,3 +1,5 @@
+// todo dedupe mouse/touch stuff
+
 const BALL_ID = 'drag-demo-ball';
 const DRAG_DEMO_ID = 'drag-demo';
 const TOUCH_CONTROLLER_ID = 'touch-controller';
@@ -27,9 +29,47 @@ function initTouchControl() {
   document.addEventListener('mouseup', handleMouseUp);
   document.addEventListener('mousemove', handleMouseMove);
 
-  // touchController.addEventListener('touchstart', handleTouchStart);
-  // touchController.addEventListener('touchend', handleTouchEnd);
-  // touchController.addEventListener('touchmove', handleTouchMove);
+  // touchController.addEventListener('touchstart', () => console.log('touch start'));
+  // touchController.addEventListener('touchend', () => console.log('touch end'));
+  // touchController.addEventListener('touchmove', () => console.log('touch move'));
+
+  touchController.addEventListener('touchstart', handleTouchStart);
+  touchController.addEventListener('touchend', handleTouchEnd);
+  touchController.addEventListener('touchmove', handleTouchMove);
+}
+
+function handleTouchStart(event) {
+    console.log('touch start!')
+  state.dragStartCoords = getCoordsFromTouchEvent(event);
+  state.ballDragStartCoords = { ...state.ballCoords };
+}
+
+function handleTouchEnd() {
+  state.dragStartCoords = null;
+  state.ballCoords = { ...ballCenterCoords };
+  renderBall();
+  tween3d(
+    offsetToSphericalCoords(state.offset),
+    offsetToSphericalCoords({x:0,y:0}),
+    15,
+    10,
+    sCoords3d => {
+      moveCameraFromSphericalCoords(sCoords3d);
+    }
+  );
+}
+
+function handleTouchMove(event) {
+  if (isDragging()) {
+    const offset = subtractCoords(
+      getCoordsFromTouchEvent(event),
+      state.dragStartCoords
+    );
+    state.ballCoords = addCoords(ballCenterCoords, offset);
+    state.offset = offset;
+    renderBall();
+    moveCameraFromOffset(offset);
+  }
 }
 
 function handleMouseDown(event) {
@@ -41,8 +81,15 @@ function handleMouseUp() {
   state.dragStartCoords = null;
   state.ballCoords = { ...ballCenterCoords };
   renderBall();
-  // moveCameraFromOffset({ x: 0, y: 0 });
-  tween(state.offset, {x:0,y:0}, 20, 15, coords => moveCameraFromOffset(coords));
+  tween3d(
+    offsetToSphericalCoords(state.offset),
+    offsetToSphericalCoords({x:0,y:0}),
+    15,
+    10,
+    sCoords3d => {
+      moveCameraFromSphericalCoords(sCoords3d);
+    }
+  );
 }
 
 function handleMouseMove(event) {
@@ -112,8 +159,11 @@ function switchAxes(cCoords3d) {
 }
 
 function offsetToSphericalCoords(offset2d) {
-  const xScalar = 1/200;
-  const yScalar = 1/200;
+  offset2d = invertHorizontally(offset2d);
+  offset2d = invertVertically(offset2d);
+
+  const xScalar = 1/500;
+  const yScalar = 1/600;
   const restingVerticalAngle = Math.PI * 1/8;
 
   const clippedVerticalAngle = clip(
@@ -122,7 +172,7 @@ function offsetToSphericalCoords(offset2d) {
     1/8 * Math.PI
   );
   return {
-    r: 30,
+    r: 50,
     theta: clip(
       offset2d.x * xScalar * Math.PI,
       -3/4 * Math.PI,
@@ -163,9 +213,13 @@ function invertVertically(offset) {
 }
 
 function moveCameraFromOffset(offset) {
-  offset = invertHorizontally(offset);
-  offset = invertVertically(offset);
   const sCoords3d = offsetToSphericalCoords(offset);
+  const cCoords3d = sphericalToCartesian(sCoords3d);
+  const coords = switchAxes(cCoords3d);
+  moveCamera(coords);
+}
+
+function moveCameraFromSphericalCoords(sCoords3d) {
   const cCoords3d = sphericalToCartesian(sCoords3d);
   const coords = switchAxes(cCoords3d);
   moveCamera(coords);

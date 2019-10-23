@@ -70,18 +70,18 @@ a {
 	position: absolute;
 	bottom: 30px;
 	left: 10px;
-	height: 300px;
-	width: 400px;
-	background: red;
+	height: 500px;
+	width: 100%;
+	background: rgba(255, 255, 255, 0.1);
 }
 
 #drag-demo {
 	position: absolute;
 	top: 30px;
 	left: 10px;
-	height: 300px;
-	width: 400px;
-	background: blue;
+	height: 500px;
+	width: 100%;
+	background: rgba(255, 255, 255, 0.1);
 }
 
 #drag-demo-ball {
