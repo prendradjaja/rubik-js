@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "bld-memo-trainer-2",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
