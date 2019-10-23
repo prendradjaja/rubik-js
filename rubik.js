@@ -192,7 +192,28 @@ function Rubik(element, dimensions, background) {
   /*** Build 27 cubes ***/
   //TODO: colour the insides of all of the faces black
   // (probably colour all faces black to begin with, then "whitelist" exterior faces)
-  var colours = [0xC41E3A, 0x009E60, 0x0051BA, 0xFF5800, 0xFFD500, 0xFFFFFF],
+  var colourCodes = {
+      green:   0x009E60,
+      blue:    0x0051BA,
+      white:   0xFFFFFF,
+      yellow:  0xFFD500,
+      orange:  0xFF5800,
+      red:     0xC41E3A,
+  };
+  var colours = [
+      // front
+      colourCodes.green,
+      // back
+      colourCodes.blue,
+      // up
+      colourCodes.white,
+      // down
+      colourCodes.yellow,
+      // left
+      colourCodes.orange,
+      // right
+      colourCodes.red,
+  ],
       faceMaterials = colours.map(function(c) {
         return new THREE.MeshLambertMaterial({ color: c , ambient: c });
       }),
