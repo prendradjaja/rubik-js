@@ -21,8 +21,11 @@ function Rubik(element, dimensions, background) {
   renderer.shadowMapEnabled = true;
   element.append(renderer.domElement);
 
-  camera.position = new THREE.Vector3(-20, 20, 30);
+  camera.position = new THREE.Vector3(0, 20, 30);
   camera.lookAt(scene.position);
+  window.camera = camera;
+  window.scene = scene;
+  window.vector = THREE.Vector3;
   THREE.Object3D._threexDomEvent.camera(camera);
 
   /*** Lights ***/
