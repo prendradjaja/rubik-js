@@ -41,7 +41,8 @@ function handleMouseUp() {
   state.dragStartCoords = null;
   state.ballCoords = { ...ballCenterCoords };
   renderBall();
-  moveCameraFromOffset({ x: 0, y: 0 });
+  // moveCameraFromOffset({ x: 0, y: 0 });
+  tween(state.offset, {x:0,y:0}, 20, 15, coords => moveCameraFromOffset(coords));
 }
 
 function handleMouseMove(event) {
@@ -51,6 +52,7 @@ function handleMouseMove(event) {
       state.dragStartCoords
     );
     state.ballCoords = addCoords(ballCenterCoords, offset);
+    state.offset = offset;
     renderBall();
     moveCameraFromOffset(offset);
   }
@@ -85,6 +87,13 @@ function subtractCoords(c1, c2) {
   return {
     x: c1.x - c2.x,
     y: c1.y - c2.y,
+  };
+}
+
+function multiplyCoords(c, scalar) {
+  return {
+    x: c.x * scalar,
+    y: c.y * scalar,
   };
 }
 
@@ -159,6 +168,5 @@ function moveCameraFromOffset(offset) {
   const sCoords3d = offsetToSphericalCoords(offset);
   const cCoords3d = sphericalToCartesian(sCoords3d);
   const coords = switchAxes(cCoords3d);
-  console.log(coords)
   moveCamera(coords);
 }
