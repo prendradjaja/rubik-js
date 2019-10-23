@@ -145,7 +145,17 @@ function moveCamera(cCoords3d) {
   window.camera.lookAt(window.scene.position);
 }
 
+function invertHorizontally(offset) {
+  return { x: -offset.x, y: offset.y };
+}
+
+function invertVertically(offset) {
+  return { x: offset.x, y: -offset.y };
+}
+
 function moveCameraFromOffset(offset) {
+  offset = invertHorizontally(offset);
+  offset = invertVertically(offset);
   const sCoords3d = offsetToSphericalCoords(offset);
   const cCoords3d = sphericalToCartesian(sCoords3d);
   const coords = switchAxes(cCoords3d);
