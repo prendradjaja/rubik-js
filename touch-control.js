@@ -2,6 +2,7 @@ const BALL_ID = 'drag-demo-ball';
 const DRAG_DEMO_ID = 'drag-demo';
 const TOUCH_CONTROLLER_ID = 'touch-controller';
 
+const ballCenterCoords = { x: 200, y: 150 };
 const state = {
   ballCoords: { x: 100, y: 100 },
   // Where the mouse was when user started dragging. Null if not dragging.
@@ -20,30 +21,15 @@ function initTouchControl() {
   const touchController = document.getElementById(TOUCH_CONTROLLER_ID);
   const ball = document.getElementById(BALL_ID);
   renderBall();
+  moveCameraFromOffset({ x: 0, y: 0 });
 
   touchController.addEventListener('mousedown', handleMouseDown);
-  touchController.addEventListener('mouseup', handleMouseUp);
-  touchController.addEventListener('mousemove', handleMouseMove);
-  // todo touch events
-}
+  document.addEventListener('mouseup', handleMouseUp);
+  document.addEventListener('mousemove', handleMouseMove);
 
-function handleTouchStart(event) {
-  state.dragStartCoords = state.getCoordsFromTouchEvent(event);
-  state.ballDragStartCoords = { ...state.ballCoords };
-}
-
-function handleTouchEnd() {
-  state.dragStartCoords = null;
-}
-
-function handleTouchMove(event) {
-  if (isDragging()) {
-    const offset = subtractCoords(
-      getCoordsFromTouchEvent(event),
-      state.dragStartCoords
-    );
-    state.ballCoords = addCoords(state.ballDragStartCoords, offset);
-  }
+  // touchController.addEventListener('touchstart', handleTouchStart);
+  // touchController.addEventListener('touchend', handleTouchEnd);
+  // touchController.addEventListener('touchmove', handleTouchMove);
 }
 
 function handleMouseDown(event) {
@@ -53,6 +39,9 @@ function handleMouseDown(event) {
 
 function handleMouseUp() {
   state.dragStartCoords = null;
+  state.ballCoords = { ...ballCenterCoords };
+  renderBall();
+  moveCameraFromOffset({ x: 0, y: 0 });
 }
 
 function handleMouseMove(event) {
@@ -61,8 +50,9 @@ function handleMouseMove(event) {
       getCoordsFromMouseEvent(event),
       state.dragStartCoords
     );
-    state.ballCoords = addCoords(state.ballDragStartCoords, offset);
+    state.ballCoords = addCoords(ballCenterCoords, offset);
     renderBall();
+    moveCameraFromOffset(offset);
   }
 }
 
@@ -102,4 +92,63 @@ function renderBall() {
   const ball = document.getElementById(BALL_ID);
   ball.style.left = state.ballCoords.x + 'px';
   ball.style.top = state.ballCoords.y + 'px';
+}
+
+function switchAxes(cCoords3d) {
+  return {
+    x: cCoords3d.x,
+    y: cCoords3d.z,
+    z: cCoords3d.y
+  };
+}
+
+function offsetToSphericalCoords(offset2d) {
+  const xScalar = 1/200;
+  const yScalar = 1/200;
+  const restingVerticalAngle = Math.PI * 1/8;
+
+  const clippedVerticalAngle = clip(
+    offset2d.y * yScalar * Math.PI,
+    -3/8 * Math.PI,
+    1/8 * Math.PI
+  );
+  return {
+    r: 30,
+    theta: clip(
+      offset2d.x * xScalar * Math.PI,
+      -3/4 * Math.PI,
+      3/4 * Math.PI,
+    ),
+    phi: (Math.PI / 2) - clippedVerticalAngle - restingVerticalAngle
+  };
+}
+
+function clip(value, min, max) {
+  return Math.max(
+    Math.min(value, max),
+    min
+  );
+}
+
+function sphericalToCartesian(sCoords3d) {
+  const c = sCoords3d;
+  return {
+    x: c.r * Math.sin(c.phi) * Math.cos(c.theta),
+    y: c.r * Math.sin(c.phi) * Math.sin(c.theta),
+    z: c.r * Math.cos(c.phi)
+  }
+}
+
+function moveCamera(cCoords3d) {
+  const c = cCoords3d;
+  window.camera.position = new THREE.Vector3(c.x, c.y, c.z);
+  window.camera.lookAt(window.scene.position);
+}
+
+function moveCameraFromOffset(offset) {
+  const sCoords3d = offsetToSphericalCoords(offset);
+  const cCoords3d = sphericalToCartesian(sCoords3d);
+  const coords = switchAxes(cCoords3d);
+  console.log(coords)
+  moveCamera(coords);
 }
