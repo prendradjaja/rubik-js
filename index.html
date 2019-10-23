@@ -29,6 +29,14 @@
     </li>
   </ul>
 
+  <div id="touch-controller">
+  </div>
+
+  <div id="drag-demo">
+    <div id="drag-demo-ball">
+    </div>
+  </div>
+
   <div id="scene"></div>
 
   <p id="info">
@@ -42,6 +50,7 @@
   <script src='lib/threex.domevent.object3d.js'></script>
 
   <script src="rubik.js"></script>
+  <script src="touch-control.js"></script>
   <script>
 
     $(function() {
@@ -59,6 +68,8 @@
       };
 
       init();
+      // initTouchControl();
+      hideTouchControl();
 
       
     });
