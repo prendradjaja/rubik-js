@@ -423,8 +423,7 @@ function Rubik(element, dimensions, background) {
       }
 
       function randomCube() {
-        var i = randomInt(0, allCubes.length - 1);
-        //TODO: don't return a centre cube
+        var i = randomInt(0, 1) * 2;
         return allCubes[i];
       }
 
