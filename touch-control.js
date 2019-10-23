@@ -159,8 +159,8 @@ function switchAxes(cCoords3d) {
 }
 
 function offsetToSphericalCoords(offset2d) {
-  offset2d = invertHorizontally(offset2d);
-  offset2d = invertVertically(offset2d);
+  // offset2d = invertHorizontally(offset2d);
+  // offset2d = invertVertically(offset2d);
 
   const xScalar = 1/500;
   const yScalar = 1/600;
