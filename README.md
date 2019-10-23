@@ -1,18 +1,14 @@
-# rubik-js
-A WebGL Rubik's cube. 
+# Pandu's BLD trainer cube
 
-[See it in action](http://jwhitfieldseed.github.io/rubik-js/). It requires a WebGL-capable browser.
+Forked from https://github.com/joews/rubik-js
+See it in action: https://bld-memo-trainer-2.firebaseapp.com/
 
-Features
+Changes
 
- * Shuffle
- * Click and drag plane rotation
- * Solve (by replaying moves in reverse)
+* Touch-and-drag to rotate
+* ...and release to restore original orientation
 
-This was a learning exercise in [Three.js](http://threejs.org/), and there are plenty of rough edges. TODO list:
+To do
 
- * Better lighting and materials
- * Support for non-WebGL browsers
- * A general solver algorithm
- * Awareness of puzzle completion, possibly with some celebratory 3D effects
- * Touch support
+* Integrate with BLD Memo Tools
+* Use random-state scrambles
