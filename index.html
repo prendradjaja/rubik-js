@@ -99,6 +99,7 @@
           const classList = document.getElementById('memo').classList;
           if (classList.contains('hide')) {
             classList.remove('hide');
+            document.getElementById('edge-input').focus();
           } else {
             classList.add('hide');
           }
