@@ -100,9 +100,10 @@ form#memo {
 	display: block;
 	position: absolute;
 	top: 70px;
-	left: 10px;
-	background: white;
-	color: black;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: black;
 	font-size: 25px;
 	padding: 10px;
 }
@@ -110,10 +111,14 @@ form#memo {
 form#memo input {
 	font-size: 25px;
 	margin-bottom: 10px;
+	background: #303030;
+	color: white;
 }
 
 form#memo button {
 	font-size: 25px;
+	background: #303030;
+	color: white;
 }
 
 .hide {
