@@ -318,7 +318,7 @@ function Rubik(element, dimensions, background) {
   }
 
   var startNextMove = function() {
-    var nextMove = moveQueue.pop();
+    var nextMove = moveQueue.shift();
 
     if(nextMove) {
       clickVector = nextMove.vector;
@@ -455,7 +455,6 @@ function Rubik(element, dimensions, background) {
         pushMove(...move);
       }
 
-      scramble.reverse();
       console.log(scramble.join(' '));
       document.getElementById('scramble-input').value = scramble.join(' ');
 
