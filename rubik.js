@@ -447,7 +447,7 @@ function Rubik(element, dimensions, background) {
         return n > -epsilon && n < epsilon;
       }
 
-      var nMoves = randomInt(40, 50);
+      var nMoves = randomInt(55, 70);
       for(var i = 0; i < nMoves; i ++) {
         //TODO: don't reselect the same axis?
         var cube = randomCube();
