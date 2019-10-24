@@ -457,6 +457,7 @@ function Rubik(element, dimensions, background) {
 
       scramble.reverse();
       console.log(scramble.join(' '));
+      document.getElementById('scramble-input').value = scramble.join(' ');
 
       startNextMove();
     },

@@ -15,18 +15,21 @@
 
   <ul id="controls">
     <li><a href="#shuffle" id="button-shuffle">Shuffle</a></li>
-    <li><a href="#solve" id="button-solve">Solve</a></li>
-    <li><a href="#undo" id="button-undo">Undo</a></li>
-    <li><a href="#reset" id="button-reset">Reset</a></li>
-    <li>
-      <label>Size</label>
-      <select id="select-size">
-        <option value="3">3x3</option>
-        <option value="4">4x4</option>
-        <option value="5">5x5</option>
-        <!-- we can go bigger but it gets unwieldy! -->
-      </select>
-    </li>
+    <li><a href="#check-memo" id="button-check-memo">Check memo</a></li>
+
+    <!-- <li><a href="#solve" id="button&#45;solve">Solve</a></li> -->
+    <!-- <li><a href="#undo" id="button&#45;undo">Undo</a></li> -->
+    <!-- <li><a href="#reset" id="button&#45;reset">Reset</a></li> -->
+    <!-- <li> -->
+    <!--   <label>Size</label> -->
+    <!--   <select id="select&#45;size"> -->
+    <!--     <option value="3">3x3</option> -->
+    <!--     <option value="4">4x4</option> -->
+    <!--     <option value="5">5x5</option> -->
+    <!--     <!&#45;&#45; we can go bigger but it gets unwieldy! &#45;&#45;> -->
+    <!--   </select> -->
+    <!-- </li> -->
+
   </ul>
 
   <div id="touch-controller">
@@ -36,6 +39,30 @@
     <div id="drag-demo-ball">
     </div>
   </div>
+
+  <form
+    id="memo"
+    class="hide"
+    action="http://csclub.uwaterloo.ca/~krmatthe/3x3x3.cgi?UBL=A&amp;URB=B&amp;UFR=C&amp;ULF=D&amp;LUB=E&amp;LFU=F&amp;LDF=G&amp;LBD=H&amp;FUL=I&amp;FRU=J&amp;FDR=K&amp;FLD=L&amp;RUF=M&amp;RBU=N&amp;RDB=O&amp;RFD=P&amp;BUR=Q&amp;BLU=R&amp;BDL=S&amp;BRD=T&amp;DFL=U&amp;DRF=V&amp;DBR=W&amp;DLB=X&amp;UB=A&amp;UR=B&amp;UF=C&amp;UL=D&amp;LU=E&amp;LF=F&amp;LD=G&amp;LB=H&amp;FU=I&amp;FR=J&amp;FD=K&amp;FL=L&amp;RU=M&amp;RB=N&amp;RD=O&amp;RF=P&amp;BU=Q&amp;BL=R&amp;BD=S&amp;BR=T&amp;DF=U&amp;DR=V&amp;DB=W&amp;DL=X&amp;Cb=E&amp;Eb=U&amp;M2off%3F=false&amp;pes=&amp;pcs=&amp;peps=&amp;CH1%2F2%3F=1&amp;auto%3F=true&amp;U=white&amp;L=orange&amp;F=green&amp;R=red&amp;B=blue&amp;D=yellow&amp;WCA%3F=true&amp;rot=&amp;flips%3F=false&amp;twists%3F=false&amp;Cm=1&amp;Em=3&amp;flipm=4&amp;twistm=2&amp;Ce=3&amp;Ee=1&amp;flipe=2&amp;twiste=4&amp;Cc=CFQKUWXA&amp;Ec=ARTEMLJXVCWU"
+    method="post"
+    target="_blank"
+    onsubmit="onSubmit()"
+  >
+    <input type="hidden" name="PAGE" value="CHECK2">
+    <input type="hidden" name="CUMSCR" value="">
+    <input type="hidden" id="scramble-input" name="scramble" value="">
+    <div>
+      <label for="cornermemo">Corners:</label>
+      <input type="text" id="corner-input" name="cornermemo" autocomplete="off">
+    </div>
+    <div>
+      <label for="edgememo">Edges:</label>
+      <input type="text" id="edge-input" name="edgememo" autocomplete="off">
+    </div>
+    <div>
+      <button type="submit">Check my memo!</button>
+    </div>
+  </form>
 
   <div id="scene"></div>
 
@@ -67,6 +94,15 @@
         $("#button-undo").on('click', function(e) { e.preventDefault(); rubik.undo(); });
         $("#button-reset").on('click', function(e) { e.preventDefault(); init(); });        
         $("#select-size").on('change', function() { init($(this).val()) });        
+        $("#button-check-memo").on('click', function(e) {
+          e.preventDefault(); // do i need this?
+          const classList = document.getElementById('memo').classList;
+          if (classList.contains('hide')) {
+            classList.remove('hide');
+          } else {
+            classList.add('hide');
+          }
+        });
       };
 
       init();
@@ -75,6 +111,15 @@
 
       
     });
+
+    function onSubmit() {
+      console.log('onsubmit');
+      const edges = document.getElementById('edge-input');
+      const corners = document.getElementById('corner-input');
+      edges.value = edges.value.toUpperCase();
+      corners.value = corners.value.toUpperCase();
+      return true;
+    }
 
   </script>
 

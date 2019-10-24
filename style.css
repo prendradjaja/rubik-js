@@ -95,3 +95,27 @@ a {
 	background: white;
 	display: none;
 }
+
+form#memo {
+	display: block;
+	position: absolute;
+	top: 70px;
+	left: 10px;
+	background: white;
+	color: black;
+	font-size: 25px;
+	padding: 10px;
+}
+
+form#memo input {
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+
+form#memo button {
+	font-size: 25px;
+}
+
+.hide {
+	visibility: hidden;
+}
