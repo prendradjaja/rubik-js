@@ -311,11 +311,74 @@ function Rubik(element, dimensions, background) {
     }
   }
 
-  var pushMove = function(cube, clickVector, axis, direction) {
+  var pushMove = function(cube, clickVector, axis, direction, skipInterpret) {
     moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
 
-    scramble.push(interpretMove(cube, axis, direction));
+    if (!skipInterpret) {
+      scramble.push(interpretMove(cube, axis, direction));
+    }
   }
+
+  const UFL = 1;
+  const DBR = -1;
+
+  const baseMoves = {
+    F: {
+      piece: UFL,
+      axis: 'x',
+      direction: -1
+    },
+    U: {
+      piece: UFL,
+      axis: 'y',
+      direction: -1
+    },
+    L: {
+      piece: UFL,
+      axis: 'z',
+      direction: -1
+    },
+    B: {
+      piece: DBR,
+      axis: 'x',
+      direction: 1
+    },
+    D: {
+      piece: DBR,
+      axis: 'y',
+      direction: 1
+    },
+    R: {
+      piece: DBR,
+      axis: 'z',
+      direction: 1
+    },
+  };
+
+  var pushMoveFromNotation = function(notation) {
+    const face = notation.charAt(0);
+    const reverse = notation.indexOf("'") !== -1;
+    const twice = notation.indexOf('2') !== -1;
+    const reps = twice ? 2 : 1;
+
+    const move = { ...baseMoves[face] };
+    if (reverse) {
+      move.direction *= -1;
+    }
+
+    for (let i = 0; i < reps; i++) {
+      position = new THREE.Vector3(move.piece, move.piece, move.piece).multiplyScalar(increment);
+      pushMove(null, position, move.axis, move.direction, true);
+    }
+  }
+
+  var inputScramble = function(notation) {
+    notation.split(' ').forEach(pushMoveFromNotation);
+    document.getElementById('scramble-input').value = notation;
+    startNextMove();
+  }
+
+  window.inputScramble = inputScramble;
 
   var startNextMove = function() {
     var nextMove = moveQueue.shift();
@@ -417,6 +480,13 @@ function Rubik(element, dimensions, background) {
 
   //Public API
   return {
+    input: function() {
+      const moves = prompt();
+      if (moves) {
+        console.log('got moves')
+        inputScramble(moves);
+      }
+    },
     shuffle: function() {
       function randomAxis() {
         return ['x', 'y', 'z'][randomInt(0,2)];
