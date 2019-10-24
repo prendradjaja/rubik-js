@@ -162,21 +162,21 @@ function offsetToSphericalCoords(offset2d) {
   // offset2d = invertHorizontally(offset2d);
   // offset2d = invertVertically(offset2d);
 
-  const xScalar = 1/500;
+  const xScalar = 1/400;
   const yScalar = 1/600;
   const restingVerticalAngle = Math.PI * 1/8;
 
   const clippedVerticalAngle = clip(
     offset2d.y * yScalar * Math.PI,
-    -3/8 * Math.PI,
-    1/8 * Math.PI
+    -1/4 * Math.PI,
+    1/32 * Math.PI
   );
   return {
     r: 50,
     theta: clip(
       offset2d.x * xScalar * Math.PI,
-      -3/4 * Math.PI,
-      3/4 * Math.PI,
+      -11/16 * Math.PI,
+      11/16 * Math.PI,
     ),
     phi: (Math.PI / 2) - clippedVerticalAngle - restingVerticalAngle
   };
