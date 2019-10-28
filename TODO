@@ -1,0 +1,6 @@
+strip input -- otherwise BMT will vomit
+warn if unsupported moves are in input
+random state scrambles
+timer
+don't let mouse do moves
+once you hit the rotation limit, dragging backwards should immediately start rotation again
