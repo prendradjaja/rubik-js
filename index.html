@@ -13,10 +13,15 @@
 
   <a href="https://github.com/prendradjaja/rubik-js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 
+  <div id="touch-controller">
+  </div>
+
   <ul id="controls">
-    <li><a href="#shuffle" id="button-shuffle">Scram</a></li>
-    <li><a href="#check-memo" id="button-check-memo">Check</a></li>
-    <li><a href="#input-scramble" id="button-input-scramble">Input</a></li>
+    <li><a href="#shuffle" id="button-shuffle">Scr</a></li>
+    <li><a href="#check-memo" id="button-check-memo">Chk</a></li>
+    <li class="spacer">&nbsp;</li>
+    <li><a href="#input-scramble" id="button-input-scramble">Inp</a></li>
+    <li><a href="#nano-input" id="button-nano-input">Na</a></li>
     <li><a href="#reload" id="button-reload">Ref</a></li>
 
     <!-- <li><a href="#solve" id="button&#45;solve">Solve</a></li> -->
@@ -34,9 +39,6 @@
 
   </ul>
 
-  <div id="touch-controller">
-  </div>
-
   <div id="drag-demo">
     <div id="drag-demo-ball">
     </div>
@@ -44,7 +46,7 @@
 
   <form
     id="memo"
-    class="hide"
+    class="overlay-form hide"
     action="http://csclub.uwaterloo.ca/~krmatthe/3x3x3.cgi?UBL=A&amp;URB=B&amp;UFR=C&amp;ULF=D&amp;LUB=E&amp;LFU=F&amp;LDF=G&amp;LBD=H&amp;FUL=I&amp;FRU=J&amp;FDR=K&amp;FLD=L&amp;RUF=M&amp;RBU=N&amp;RDB=O&amp;RFD=P&amp;BUR=Q&amp;BLU=R&amp;BDL=S&amp;BRD=T&amp;DFL=U&amp;DRF=V&amp;DBR=W&amp;DLB=X&amp;UB=A&amp;UR=B&amp;UF=C&amp;UL=D&amp;LU=E&amp;LF=F&amp;LD=G&amp;LB=H&amp;FU=I&amp;FR=J&amp;FD=K&amp;FL=L&amp;RU=M&amp;RB=N&amp;RD=O&amp;RF=P&amp;BU=Q&amp;BL=R&amp;BD=S&amp;BR=T&amp;DF=U&amp;DR=V&amp;DB=W&amp;DL=X&amp;Cb=E&amp;Eb=U&amp;M2off%3F=false&amp;pes=&amp;pcs=&amp;peps=&amp;CH1%2F2%3F=1&amp;auto%3F=true&amp;U=white&amp;L=orange&amp;F=green&amp;R=red&amp;B=blue&amp;D=yellow&amp;WCA%3F=true&amp;rot=&amp;flips%3F=false&amp;twists%3F=false&amp;Cm=1&amp;Em=3&amp;flipm=4&amp;twistm=2&amp;Ce=3&amp;Ee=1&amp;flipe=2&amp;twiste=4&amp;Cc=CFQKUWXA&amp;Ec=ARTEMLJXVCWU"
     method="post"
     target="_blank"
@@ -65,6 +67,14 @@
       <button type="submit">Check my memo!</button>
     </div>
   </form>
+
+  <div
+    id="nano-container"
+    class="overlay-form hide"
+  >
+    <textarea id="nano"></textarea>
+    <button id="nano-submit" type="submit">Input from Nano Timer</button>
+  </div>
 
   <div id="scene"></div>
 
@@ -92,7 +102,16 @@
         var rubik = new Rubik(element, dimensions);
 
         $("#button-shuffle").on('click', function(e) { e.preventDefault(); rubik.shuffle() });
-        $("#button-input-scramble").on('click', function(e) { e.preventDefault(); rubik.input() });
+        $("#button-nano-input").on('click', function(e) {
+          e.preventDefault();
+          const classList = document.getElementById('nano-container').classList;
+          if (classList.contains('hide')) {
+            classList.remove('hide');
+            document.getElementById('edge-input').focus();
+          } else {
+            classList.add('hide');
+          }
+        });
         $("#button-solve").on('click', function(e) { e.preventDefault(); rubik.solve(); });
         $("#button-undo").on('click', function(e) { e.preventDefault(); rubik.undo(); });
         $("#button-reset").on('click', function(e) { e.preventDefault(); init(); });        
@@ -108,6 +127,20 @@
           }
         });
         $("#button-reload").on('click', function(e) { e.preventDefault(); window.location.href = window.location.href; });
+        $("#button-input-scramble").on('click', function(e) {
+          e.preventDefault();
+          rubik.input()
+        });
+
+        $("#nano-submit").on('click', function(e) {
+          const nanoForm = document.getElementById('nano-container');
+          const nano = document.getElementById('nano');
+          const lines = nano.value.split('\n');
+          const scramble = lines[lines.indexOf('Scramble:') + 1];
+          rubik.input(scramble);
+          nanoForm.classList.add('hide');
+        });
+
       };
 
       init();

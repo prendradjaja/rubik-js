@@ -32,18 +32,9 @@ a {
 }
 
 #controls > li {
-	margin: 0 5px;
+	margin: 0 10px;
 	padding: 0;
 	float: left;
-}
-
-#controls > li:after {
-	content: '~';
-	color: #999;
-}
-
-#controls > li:last-child:after {
-	content: none;
 }
 
 #controls > li a, #controls > li label {
@@ -51,6 +42,10 @@ a {
 	font-size: 3.2em;
 	color: #eee;
 	line-height: 1.2em;
+}
+
+#controls > li.spacer {
+	margin-left: 20px;
 }
 
 #controls > li select {
@@ -68,9 +63,9 @@ a {
 
 #touch-controller {
 	position: absolute;
-	top: 65px;
-	bottom: 40px;
-	left: 10px;
+	top: 0;
+	bottom: 0;
+	left: 0;
 	/* height: 100%; */
 	width: 100%;
 	/* background: rgba(255, 255, 255, 0.1); */
@@ -96,7 +91,7 @@ a {
 	display: none;
 }
 
-form#memo {
+.overlay-form {
 	display: block;
 	position: absolute;
 	top: 70px;
@@ -116,7 +111,7 @@ form#memo input {
 	text-transform: uppercase;
 }
 
-form#memo button {
+.overlay-form button {
 	font-size: 25px;
 	background: #303030;
 	color: white;
@@ -124,4 +119,16 @@ form#memo button {
 
 .hide {
 	visibility: hidden;
+}
+
+#nano {
+	background: black;
+	color: white;
+	width: 100%;
+	height: 200px;
+	font-size: 25px;
+}
+
+#nano-submit {
+	display: block;
 }

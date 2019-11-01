@@ -480,10 +480,9 @@ function Rubik(element, dimensions, background) {
 
   //Public API
   return {
-    input: function() {
-      const moves = prompt();
+    input: function(moves) {
+      moves = moves || prompt();
       if (moves) {
-        console.log('got moves')
         inputScramble(moves);
       }
     },
