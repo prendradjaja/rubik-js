@@ -1,9 +1,14 @@
+easy
 . strip input -- otherwise BMT will vomit (is this true??)
 . warn if unsupported moves are in input
+. bugfix: tapping does a glitch rotation
+
+medium
 . random state scrambles
 . timer
 . don't let mouse do moves
 . once you hit the rotation limit, dragging backwards should immediately start rotation again
-. bugfix: tapping does a glitch rotation
+. MBLD
+. wide moves
 
 x accept nano timer fmt
