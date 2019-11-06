@@ -1,0 +1,18 @@
+- how to do infinite speed:
+    instead of if(isMoving) doMove(), use while(isMoving) doMove()
+- octocats:
+    http://tholman.com/github-corners/
+
+spec for multiblind:
+- click MBLD
+- enter num cubes by using +/- btns. remembers last input in localstorage.
+- click "begin"
+- controls at top disappear and are replaced with numbers for cubes
+- you can cycle thru cubes and memo them
+- once done, click "done"
+- enter all your memos, click "done" (TODO mockup)
+- click "check" on each one-by-one. (TODO mockup)
+  - BMT will pop up
+  - you can then mark whether it was a success or failure
+  - todo: can i automate this? (will CORS let me?) or port BMT to js?
+- once you've checked which are DNFs, review DNFs & check why you DNFed (TODO mockup)
